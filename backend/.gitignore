@@ -1,1 +1,11 @@
-node_modules
+# dependencies
+node_modules/
+
+# output
+dist/
+
+# env
+.env
+
+# prisma generated
+generated/
