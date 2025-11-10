@@ -14,10 +14,25 @@ from pydantic import BaseModel
 import rag_core
 import utils
 
+from fastapi.middleware.cors import CORSMiddleware
+
 # --- Configuración de la App FastAPI ---
 app = FastAPI(
     title="Asistente de Políticas de RRHH",
     description="Una API para chatear con las políticas de RRHH de la empresa usando RAG."
+)
+
+# --- Configuración de CORS ---
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --- Modelos de Pydantic ---
