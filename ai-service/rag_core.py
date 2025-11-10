@@ -87,6 +87,11 @@ def _retrieval_docs(input_user: str, collection_name: str) -> list:
     """Realiza la búsqueda de similitud en la base de datos vectorial."""
     vector_store = _get_vector_store(collection_name)
     docs = vector_store.similarity_search(input_user)
+    
+    print(">>> DOCS ENCONTRADOS:", len(docs))
+    print(">>> COLLECTION NAME:", collection_name)
+    print(">>> INPUT USER:", input_user)
+
     return docs
 
 def _generate_response_stream(input_user: str, contexto: str):

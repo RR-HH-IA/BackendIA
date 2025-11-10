@@ -7,28 +7,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
-  id        String   @id @default(uuid())
+  id         String      @id @default(uuid())
   email      String      @unique
   password   String
   createdAt  DateTime    @default(now())
-  workspaces Workspace[]
+
+  workspaces Workspace[] @relation("OwnerWorkspaces")
+  memberships WorkspaceMember[]
 }
 
 model Workspace {
-  id        String   @id @default(uuid())
-  code      String     @unique
-  owner     User       @relation(fields: [ownerId], references: [id])
-  ownerId   String
-  createdAt DateTime   @default(now())
-  documents Document[]
+  id         String      @id @default(uuid())
+  code       String      @unique
+  name       String
+  ownerId    String
+  owner      User        @relation("OwnerWorkspaces", fields: [ownerId], references: [id])
+  createdAt  DateTime    @default(now())
+
+  documents  Document[]
+  members    WorkspaceMember[]
+}
+
+model WorkspaceMember {
+  id          String    @id @default(uuid())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId String
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  createdAt   DateTime  @default(now())
+
+  @@unique([workspaceId, userId])
 }
 
 model Document {
-  id        String   @id @default(uuid())
-  filename    String
-  embeddingId String? // referencia al vector store
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
-  workspaceId String
-  createdAt   DateTime  @default(now())
+  id             String     @id @default(uuid())
+  filename       String
+  collectionName String
+  workspaceId    String
+  workspace      Workspace  @relation(fields: [workspaceId], references: [id])
+  createdAt      DateTime   @default(now())
 }
