@@ -62,18 +62,6 @@ export class WorkspaceService {
     return ws;
   }
 
-  async getWorkspaceByCode(code: string) {
-    // Permite unirse usando el código corto
-    const ws = await this.prisma.workspace.findUnique({
-      where: { code },
-      include: { documents: true },
-    });
-
-    if (!ws) throw new NotFoundException('Workspace not found');
-
-    return ws;
-  }
-
   async joinWorkspace(userId: string, code: string) {
     const ws = await this.prisma.workspace.findUnique({ where: { code } });
     if (!ws) throw new NotFoundException('Workspace not found');

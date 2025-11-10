@@ -53,12 +53,6 @@ async listJoined(@Req() req) {
     return this.wsService.getWorkspaceById(id, userId);
   }
 
-  // Obtener por code (para que invitado entre con código)
-  @Get('code/:code')
-  async getByCode(@Param('code') code: string) {
-    return this.wsService.getWorkspaceByCode(code);
-  }
-
   @Post('join')
   async join(@Req() req, @Body() dto: JoinWorkspaceDto) {
     const userId = req.user.id;
